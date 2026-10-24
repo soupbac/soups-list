@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "To-Do List"
+description = "A beginner-friendly personal to-do list with task completion, deletion, a remaining-task count, and browser storage that keeps tasks after refresh."
+version = "1.0.0"
+id = "artifacts/todo-list"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19971
+
+[services.development]
+run = "pnpm --filter @workspace/todo-list run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/todo-list", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/todo-list/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19971"
+BASE_PATH = "/"
